@@ -40,10 +40,11 @@ Requires:       python-matplotlib
 Recommends:     python-scikit-learn
 Recommends:     python-pandas
 Recommends:     python-patsy
-Recommends:     python-Traits # TODO: python3 version
 Recommends:     python-pillow
 Recommends:     h5py
 Recommends:     python-statsmodels
+# TODO: python3 version
+Recommends:     python-Traits
 
 %description -n python2-%{modname}
 This package is designed for sensor- and source-space analysis of M-EEG data,
