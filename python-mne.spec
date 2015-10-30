@@ -96,7 +96,6 @@ rm -rf %{py3dir}
 mkdir %{py3dir}
 cp -a . %{py3dir}
 find %{py3dir}/%{modname}/commands/ -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
-sed -i '1s|^#!python|#!%{__python3}|' %{py3dir}/bin/mne
 
 %build
 %py2_build
@@ -110,6 +109,24 @@ pushd %{py3dir}
   %py3_install
 popd
 
+# Rename binaries
+pushd %{buildroot}%{_bindir}
+  mv %{modname} python2-%{modname}
+
+  for i in %{modname} %{modname}-2 %{modname}-%{python2_version}
+  do
+    ln -s python2-%{modname} $i
+  done
+
+  cp python2-%{modname} python3-%{modname}
+  sed -i '1s|^#!python|#!%{__python3}|' python3-%{modname}
+
+  for i in %{modname}-3 %{modname}-%{python3_version}
+  do
+    ln -s python3-%{modname} $i
+  done
+popd
+
 %check
 export MNE_SKIP_TESTING_DATASET_TESTS=true
 export MNE_SKIP_NETWORK_TESTS=1
@@ -120,15 +137,20 @@ popd
 
 %files -n python2-%{modname}
 %license LICENSE.txt
-%doc README.rst examples AUTHORS.txt
+%doc README.rst examples AUTHORS.rst
+%{_bindir}/%{modname}
+%{_bindir}/%{modname}-2
 %{_bindir}/%{modname}-%{python2_version}
+%{_bindir}/python2-%{modname}
 %{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*.egg-info/
 
 %files -n python3-%{modname}
 %license LICENSE.txt
-%doc README.rst examples AUTHORS.txt
+%doc README.rst examples AUTHORS.rst
+%{_bindir}/%{modname}-3
 %{_bindir}/%{modname}-%{python3_version}
+%{_bindir}/python3-%{modname}
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}*.egg-info/
 
