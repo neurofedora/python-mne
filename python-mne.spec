@@ -3,7 +3,7 @@
 Name:           python-%{modname}
 Version:        0.10
 Release:        2%{?dist}
-Summary:        Magnetoencephalography (MEG) and Electroencephalography (EEG)
+Summary:        Magnetoencephalography (MEG) and Electroencephalography (EEG) data analysis
 
 # Bundled FieldTrip
 # https://github.com/fieldtrip/fieldtrip/blob/master/realtime/src/buffer/python/FieldTrip.py
@@ -203,6 +203,7 @@ popd
 - fix dependencies around Traits (add py3 version)
 - unbundle jdcal/six/decorator/tempita/h5io
 - add Provides: bundled(pythonX-FieldTrip)
+- More better Summary
 
 * Fri Oct 30 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 0.10-1
 - Initial package
