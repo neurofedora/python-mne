@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.10
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Magnetoencephalography (MEG) and Electroencephalography (EEG) data analysis
 
 # Bundled FieldTrip
@@ -96,7 +96,7 @@ statistics.
 Python 3 version.
 
 %prep
-%autosetup -c
+%setup -q -c
 
 mv %{modname}-python-%{version} python2
 
@@ -121,7 +121,7 @@ pushd python2/
     -e "s/from \.*externals.h5io/from h5io/" \
     -e "s/from \.*externals.tempita/from tempita/" \
     -e "s/jd2jcal(\(.*\))/jd2jcal(\1, 0)[:-1]/" \
-    -e "s/\(jcal2jd(.*)\)/\1[-1]/" \
+    -e "s/(jcal2jd(\(.*\)))/(jcal2jd(\1)[-1])/" \
     {} ';'
   sed -i -e "/mne\.externals\.[^']*/d" setup.py
 popd
@@ -198,6 +198,9 @@ popd
 %{python3_sitelib}/%{modname}-%{version}*.egg-info/
 
 %changelog
+* Mon Nov 09 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 0.10-3
+- Fix unbundling jdcal
+
 * Sun Nov 08 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 0.10-2
 - /usr/bin/mne uses python3
 - fix dependencies around Traits (add py3 version)
