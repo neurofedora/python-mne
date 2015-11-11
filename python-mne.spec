@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Magnetoencephalography (MEG) and Electroencephalography (EEG) data analysis
 
 # Bundled FieldTrip
@@ -149,6 +149,18 @@ pushd python3
   %py3_install
 popd
 
+for lib in %{buildroot}%{python2_sitelib}/%{modname}/%{modname}/commands/*.py; do
+  sed '1{\@^#!/usr/bin/env python@d}' $lib > $lib.new &&
+  touch -r $lib $lib.new &&
+  mv $lib.new $lib
+done
+
+for lib in %{buildroot}%{python3_sitelib}/%{modname}/%{modname}/commands/*.py; do
+  sed '1{\@^#!/usr/bin/env python@d}' $lib > $lib.new &&
+  touch -r $lib $lib.new &&
+  mv $lib.new $lib
+done
+
 # Rename binaries
 pushd %{buildroot}%{_bindir}
   mv %{modname} python3-%{modname}
@@ -198,6 +210,9 @@ popd
 %{python3_sitelib}/%{modname}-%{version}*.egg-info/
 
 %changelog
+* Wed Nov 11 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 0.10-4
+- Fix non-executable-script
+
 * Mon Nov 09 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 0.10-3
 - Fix unbundling jdcal
 
